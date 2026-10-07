@@ -347,7 +347,7 @@ function setTheme(theme, save = true) {
   const label = isDark ? 'Switch to light mode' : 'Switch to dark mode';
 
   document.documentElement.dataset.theme = nextTheme;
-  themeIcon.textContent = isDark ? '\\u2600' : '\\u263E';
+  themeIcon.textContent = isDark ? String.fromCharCode(0x2600) : String.fromCharCode(0x263e);
   themeToggle.setAttribute('aria-label', label);
   themeToggle.setAttribute('title', label);
   themeToggle.setAttribute('aria-pressed', String(isDark));
