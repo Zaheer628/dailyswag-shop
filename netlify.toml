@@ -1,0 +1,9 @@
+[build]
+  command = "mkdir -p dist && cp index.html script.js styles.css dist/ && cp -R images 'dailyswag logo.png' dist/"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[functions]
+  directory = "netlify/functions"
