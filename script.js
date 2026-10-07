@@ -589,9 +589,7 @@ signupDialog.addEventListener('click', (event) => {
 });
 
 signupDialog.addEventListener('close', () => {
-  try {
-    sessionStorage.setItem('dailyswag-signup-dismissed', 'yes');
-  } catch {}
+  // The prompt should be available again the next time the site opens.
 });
 
 signupForm.addEventListener('submit', async (event) => {
@@ -604,22 +602,25 @@ signupForm.addEventListener('submit', async (event) => {
   signupSubmit.textContent = 'Joining...';
 
   try {
-    const formData = new FormData(signupForm);
     const submission = Object.fromEntries(new FormData(signupForm));
     submission.name = String(submission.name || '').trim();
     submission.email = String(submission.email || '').trim();
 
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 15000);
     const response = await fetch('/api/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(submission)
+      body: JSON.stringify(submission),
+      signal: controller.signal
     });
+    window.clearTimeout(timeout);
 
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || 'Signup could not be saved.');
 
     try {
-      localStorage.setItem('dailyswag-signup-complete', 'yes');
+      localStorage.setItem('dailyswag-signup-complete-v2', 'yes');
     } catch {}
 
     signupForm.hidden = true;
@@ -627,10 +628,12 @@ signupForm.addEventListener('submit', async (event) => {
     signupMessage.classList.add('is-success');
     signupSubmit.disabled = false;
     signupSubmit.textContent = 'Joined';
-  } catch {
+  } catch (error) {
     signupMessage.textContent = window.location.protocol === 'file:'
       ? 'This local preview cannot save sign-ups. Open the deployed Cloudflare Pages site to join the list.'
-      : 'Sign-up could not be saved. Check the Cloudflare DB binding and try again.';
+      : error.name === 'AbortError'
+        ? 'The signup request timed out. Please try again.'
+        : error.message || 'Sign-up could not be saved. Please try again.';
     signupSubmit.disabled = false;
     signupSubmit.textContent = 'Sign me up';
   }
@@ -641,8 +644,7 @@ function showSignupPrompt() {
   if (isPaymentReturn || cartDialog.open) return;
 
   try {
-    if (localStorage.getItem('dailyswag-signup-complete') === 'yes') return;
-    if (sessionStorage.getItem('dailyswag-signup-dismissed') === 'yes') return;
+    if (localStorage.getItem('dailyswag-signup-complete-v2') === 'yes') return;
   } catch {}
 
   window.setTimeout(() => {
