@@ -212,7 +212,7 @@ function renderCart() {
           <span>${formatPrice(product.price, 'NGN')} each</span>
         </div>
         <div class="cart-item-controls">
-          <button type="button" data-cart-action="decrease" data-product-id="${product.id}" aria-label="Remove one ${product.name}">−</button>
+          <button type="button" data-cart-action="decrease" data-product-id="${product.id}" aria-label="Remove one ${product.name}">âˆ’</button>
           <span>${quantity}</span>
           <button type="button" data-cart-action="increase" data-product-id="${product.id}" aria-label="Add one ${product.name}">+</button>
           <button class="cart-remove" type="button" data-cart-action="remove" data-product-id="${product.id}">Remove</button>
@@ -347,7 +347,7 @@ function setTheme(theme, save = true) {
   const label = isDark ? 'Switch to light mode' : 'Switch to dark mode';
 
   document.documentElement.dataset.theme = nextTheme;
-  themeIcon.textContent = isDark ? '☀' : '☾';
+  themeIcon.textContent = isDark ? 'â˜€' : 'â˜¾';
   themeToggle.setAttribute('aria-label', label);
   themeToggle.setAttribute('title', label);
   themeToggle.setAttribute('aria-pressed', String(isDark));
@@ -460,7 +460,7 @@ function renderProducts(category = 'all') {
             />
             ${product.backImage ? `
               <button class="side-toggle" type="button" aria-label="Show back of ${product.name}" aria-pressed="false" title="Swap front/back view">
-                <span aria-hidden="true">⇄</span>
+                <span aria-hidden="true">â‡„</span>
               </button>
             ` : ''}
           </div>
@@ -490,7 +490,7 @@ function renderProducts(category = 'all') {
       image.alt = `${image.dataset.productName} ${side} view`;
       button.setAttribute('aria-pressed', String(showingBack));
       button.setAttribute('aria-label', `Show ${showingBack ? 'front' : 'back'} of ${image.dataset.productName}`);
-      button.innerHTML = '<span aria-hidden="true">⇄</span>';
+      button.innerHTML = '<span aria-hidden="true">â‡„</span>';
     });
   });
 
@@ -623,8 +623,10 @@ signupForm.addEventListener('submit', async (event) => {
     } catch {}
 
     signupForm.hidden = true;
-    signupMessage.textContent = 'You’re on the list. Watch your inbox for the next drop.';
+    signupMessage.textContent = 'Youâ€™re on the list. Watch your inbox for the next drop.';
     signupMessage.classList.add('is-success');
+    signupSubmit.disabled = false;
+    signupSubmit.textContent = 'Joined';
   } catch {
     signupMessage.textContent = window.location.protocol === 'file:'
       ? 'This local preview cannot save sign-ups. Open the deployed Cloudflare Pages site to join the list.'
@@ -663,3 +665,4 @@ renderProducts();
 renderCart();
 verifyPaystackReturn();
 showSignupPrompt();
+
