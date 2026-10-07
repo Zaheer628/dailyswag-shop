@@ -14,7 +14,10 @@ const products = new Map([
 ]);
 
 function json(body, status = 200) {
-  return Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
+  return Response.json(body, {
+    status,
+    headers: { 'Cache-Control': 'no-store' }
+  });
 }
 
 async function callPaystack(env, path, options = {}) {
@@ -29,28 +32,38 @@ async function callPaystack(env, path, options = {}) {
 }
 
 export async function onRequestPost({ request, env }) {
-  if (!env.PAYSTACK_SECRET_KEY) return json({ error: 'Payments are not configured yet.' }, 503);
+  if (!env.PAYSTACK_SECRET_KEY) {
+    return json({ error: 'Payments are not configured yet.' }, 503);
+  }
 
   let body;
-  try { body = await request.json(); } catch { return json({ error: 'Invalid request body.' }, 400); }
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: 'Invalid request body.' }, 400);
+  }
 
   const email = typeof body.email === 'string' ? body.email.trim() : '';
-  if (email.length > 254 || !/^\\S+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+  if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return json({ error: 'Enter a valid email address.' }, 400);
   }
+
   if (!Array.isArray(body.items) || body.items.length === 0 || body.items.length > 20) {
     return json({ error: 'Your bag is empty or invalid.' }, 400);
   }
 
   let totalNaira = 0;
   const orderItems = [];
+
   for (const item of body.items) {
     const productId = Number(item?.id);
     const quantity = Number(item?.quantity);
     const product = products.get(productId);
+
     if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
       return json({ error: 'Your bag contains an invalid item or quantity.' }, 400);
     }
+
     totalNaira += product.price * quantity;
     orderItems.push({ name: product.name, quantity });
   }
@@ -65,7 +78,10 @@ export async function onRequestPost({ request, env }) {
         currency: 'NGN',
         channels: ['card', 'bank_transfer'],
         callback_url: new URL('/', request.url).toString(),
-        metadata: { expected_amount: totalNaira * 100, order_items: orderItems }
+        metadata: {
+          expected_amount: totalNaira * 100,
+          order_items: orderItems
+        }
       })
     });
   } catch {
@@ -73,32 +89,46 @@ export async function onRequestPost({ request, env }) {
   }
 
   let result;
-  try { result = await paystackResponse.json(); } catch {
+  try {
+    result = await paystackResponse.json();
+  } catch {
     return json({ error: 'Paystack returned an invalid response.' }, 502);
   }
+
   if (!paystackResponse.ok || !result.status || !result.data?.authorization_url) {
     return json({ error: result.message || 'Paystack could not start checkout. Try again.' }, 502);
   }
+
   return json({ authorizationUrl: result.data.authorization_url });
 }
 
 export async function onRequestGet({ request, env }) {
-  if (!env.PAYSTACK_SECRET_KEY) return json({ error: 'Payments are not configured yet.' }, 503);
+  if (!env.PAYSTACK_SECRET_KEY) {
+    return json({ error: 'Payments are not configured yet.' }, 503);
+  }
 
   const reference = new URL(request.url).searchParams.get('reference');
-  if (typeof reference !== 'string' || !/^[A-Za-z0-9.=\\-]{1,100}$/.test(reference)) {
+  if (typeof reference !== 'string' || !/^[A-Za-z0-9.=\-]{1,100}$/.test(reference)) {
     return json({ error: 'Invalid payment reference.' }, 400);
   }
 
   let paystackResponse;
-  try { paystackResponse = await callPaystack(env, `/transaction/verify/${encodeURIComponent(reference)}`); } catch {
+  try {
+    paystackResponse = await callPaystack(
+      env,
+      `/transaction/verify/${encodeURIComponent(reference)}`
+    );
+  } catch {
     return json({ error: 'Could not connect to Paystack. Try again.' }, 502);
   }
 
   let result;
-  try { result = await paystackResponse.json(); } catch {
+  try {
+    result = await paystackResponse.json();
+  } catch {
     return json({ error: 'Paystack returned an invalid response.' }, 502);
   }
+
   if (!paystackResponse.ok || !result.status || !result.data) {
     return json({ error: 'Could not verify this payment with Paystack.' }, 502);
   }
