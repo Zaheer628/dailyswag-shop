@@ -7,3 +7,8 @@ directory = "./dist"
 binding = "ASSETS"
 run_worker_first = ["/api/*"]
 not_found_handling = "single-page-application"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dailyswag-signups"
+database_id = "812cae09-8e1c-4eb0-8b3b-86aa7652a3b3"
