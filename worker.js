@@ -1,6 +1,6 @@
 import { onRequestGet as verifyPaystack, onRequestPost as startPaystack } from './functions/api/paystack.js';
-
 import { onRequestPost as signup } from './functions/api/signup.js';
+import { onRequestPost as paystackWebhook } from './functions/api/paystack-webhook.js';
 
 export default {
   async fetch(request, env) {
@@ -10,6 +10,10 @@ export default {
       if (request.method === 'POST') return startPaystack({ request, env });
       if (request.method === 'GET') return verifyPaystack({ request, env });
       return new Response('Method Not Allowed', { status: 405 });
+    }
+
+    if (url.pathname === '/api/paystack/webhook' && request.method === 'POST') {
+      return paystackWebhook({ request, env });
     }
 
     if (url.pathname === '/api/signup' && request.method === 'POST') {
