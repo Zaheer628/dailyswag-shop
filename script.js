@@ -621,7 +621,9 @@ productDialog.addEventListener('click', (event) => {
 productDetailAdd.addEventListener('click', () => {
   if (!activeProduct) return;
   selectedSizes.set(activeProduct.id, productSizeSelect.value);
-  cart.set(activeProduct.id, (cart.get(activeProduct.id) || 0) + 1);
+  // Selecting options represents one item. Additional units can be added
+  // explicitly with the + control in the bag.
+  cart.set(activeProduct.id, Math.max(1, cart.get(activeProduct.id) || 0));
   renderCart();
   productDetailAdd.textContent = 'Added to bag';
   window.setTimeout(() => { productDetailAdd.textContent = 'Add to bag'; }, 1000);
