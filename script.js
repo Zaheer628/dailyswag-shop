@@ -125,6 +125,33 @@ let activeCategory = 'all';
 let selectedCurrency = 'NGN';
 let activeSearch = '';
 let activeSort = 'featured';
+const apparelSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+function getProductSizes(productId) {
+  const product = products.find((item) => item.id === productId);
+  return product?.categoryKey === 'caps' ? ['One size'] : apparelSizes;
+}
+
+function getDefaultSize(productId) {
+  const sizes = getProductSizes(productId);
+  return sizes.includes('M') ? 'M' : sizes[0];
+}
+
+function restoreSelectedSizes() {
+  try {
+    const savedSizes = JSON.parse(sessionStorage.getItem('dailyswag-sizes') || '[]');
+    if (!Array.isArray(savedSizes)) return new Map();
+
+    const validSizes = savedSizes.filter((entry) => {
+      if (!Array.isArray(entry) || entry.length !== 2) return false;
+      return getProductSizes(Number(entry[0])).includes(entry[1]);
+    }).map(([productId, size]) => [Number(productId), size]);
+
+    return new Map(validSizes);
+  } catch {
+    return new Map();
+  }
+}
 
 function restoreCart() {
   try {
@@ -148,7 +175,7 @@ function restoreCart() {
 }
 
 const cart = restoreCart();
-const selectedSizes = new Map();
+const selectedSizes = restoreSelectedSizes();
 
 const productsGrid = document.getElementById('products-grid');
 const storeSearch = document.querySelector('.store-search');
@@ -202,6 +229,7 @@ function renderCart() {
 
   try {
     sessionStorage.setItem('dailyswag-cart', JSON.stringify(cartEntries));
+    sessionStorage.setItem('dailyswag-sizes', JSON.stringify([...selectedSizes.entries()]));
   } catch {}
 
   document.getElementById('cart-count').textContent = itemCount;
@@ -217,11 +245,11 @@ function renderCart() {
     const product = products.find((item) => item.id === productId);
     if (!product) return '';
 
-    return `
+        return `
       <article class="cart-item">
         <div class="cart-item-copy">
           <strong>${product.name}</strong>
-          <span>${formatPrice(product.price, 'NGN')} each Â· Size ${selectedSizes.get(product.id) || 'M'}</span>
+          <span>${formatPrice(product.price, 'NGN')} each - Size ${selectedSizes.get(product.id) || getDefaultSize(product.id)}</span>
         </div>
         <div class="cart-item-controls">
       <button type="button" data-cart-action="decrease" data-product-id="${product.id}" aria-label="Remove one ${product.name}">&#8722;</button>
@@ -247,7 +275,7 @@ function openProductDetails(productId) {
   const product = products.find((item) => item.id === productId);
   if (!product) return;
   activeProduct = product;
-  const sizes = product.categoryKey === 'caps' ? ['One size'] : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  const sizes = getProductSizes(product.id);
   productDetailTitle.textContent = product.name;
   productDetailCategory.textContent = `${product.category} / ${product.tag}`;
   productDetailPrice.textContent = formatPrice(product.price, 'NGN');
@@ -280,7 +308,11 @@ async function startPaystackCheckout(email) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email,
-        items: [...cart.entries()].map(([id, quantity]) => ({ id, quantity, size: selectedSizes.get(id) || 'M' }))
+        items: [...cart.entries()].map(([id, quantity]) => ({
+          id,
+          quantity,
+          size: selectedSizes.get(id) || getDefaultSize(id)
+        }))
       })
     });
     const result = await response.json();
@@ -318,6 +350,7 @@ async function verifyPaystackReturn() {
       pageUrl.searchParams.delete('trxref');
       window.history.replaceState({}, document.title, pageUrl.toString());
       cart.clear();
+      selectedSizes.clear();
       renderCart();
       cartMessage.textContent = `Payment verified. Reference: ${result.reference}`;
       return;
@@ -611,6 +644,7 @@ cartItemsEl.addEventListener('click', (event) => {
 
   if (button.dataset.cartAction === 'remove' || (button.dataset.cartAction === 'decrease' && quantity <= 1)) {
     cart.delete(productId);
+    selectedSizes.delete(productId);
   } else if (button.dataset.cartAction === 'increase') {
     cart.set(productId, quantity + 1);
   } else if (button.dataset.cartAction === 'decrease') {
@@ -700,9 +734,6 @@ function showSignupPrompt() {
   const isPaymentReturn = new URLSearchParams(window.location.search).has('reference');
   if (isPaymentReturn || cartDialog.open) return;
 
-  try {
-    if (localStorage.getItem('dailyswag-signup-complete-v2') === 'yes') return;
-  } catch {}
 
   window.setTimeout(() => {
     if (!cartDialog.open && !signupDialog.open) signupDialog.showModal();
@@ -724,4 +755,8 @@ renderProducts();
 renderCart();
 verifyPaystackReturn();
 showSignupPrompt();
+
+
+
+
 
