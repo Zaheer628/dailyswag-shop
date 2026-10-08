@@ -56,16 +56,21 @@ export async function onRequestPost({ request, env }) {
   const orderItems = [];
 
   for (const item of body.items) {
-    const productId = Number(item?.id);
-    const quantity = Number(item?.quantity);
+    // Normalize values because browser/session storage payloads can arrive as strings.
+    const productId = Number.parseInt(String(item?.id ?? ''), 10);
+    const quantity = Number.parseInt(String(item?.quantity ?? ''), 10);
+    const size = typeof item?.size === 'string' ? item.size.trim() : '';
     const product = products.get(productId);
+    const allowedSizes = [5, 6].includes(productId)
+      ? ['One size']
+      : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
-    if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
-      return json({ error: 'Your bag contains an invalid item or quantity.' }, 400);
+    if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 10 || !allowedSizes.includes(size)) {
+      return json({ error: 'Your bag contains an invalid item, size, or quantity.' }, 400);
     }
 
     totalNaira += product.price * quantity;
-    orderItems.push({ name: product.name, quantity });
+    orderItems.push({ name: product.name, quantity, size });
   }
 
   let paystackResponse;
@@ -149,3 +154,4 @@ export async function onRequestGet({ request, env }) {
     channel: transaction.channel || null
   });
 }
+
