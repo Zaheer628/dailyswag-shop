@@ -336,7 +336,7 @@ try {
 
 try {
   const savedCurrency = localStorage.getItem('dailyswag-currency');
-  if (savedCurrency && currencyRates[savedCurrency]) {
+  if (savedCurrency === 'NGN') {
     selectedCurrency = savedCurrency;
   }
 } catch {}
