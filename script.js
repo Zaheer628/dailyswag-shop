@@ -148,6 +148,7 @@ function restoreCart() {
 }
 
 const cart = restoreCart();
+const selectedSizes = new Map();
 
 const productsGrid = document.getElementById('products-grid');
 const storeSearch = document.querySelector('.store-search');
@@ -172,6 +173,17 @@ const signupForm = document.getElementById('signup-form');
 const signupClose = document.getElementById('signup-close');
 const signupSubmit = document.getElementById('signup-submit');
 const signupMessage = document.getElementById('signup-message');
+const productDialog = document.getElementById('product-dialog');
+const productDialogClose = document.getElementById('product-dialog-close');
+const productDetailImage = document.getElementById('product-detail-image');
+const productDetailTitle = document.getElementById('product-detail-title');
+const productDetailCategory = document.getElementById('product-detail-category');
+const productDetailPrice = document.getElementById('product-detail-price');
+const productSizeSelect = document.getElementById('product-size-select');
+const productDetailAdd = document.getElementById('product-detail-add');
+const productShareButton = document.getElementById('product-share-button');
+const shareLinks = document.getElementById('share-links');
+let activeProduct = null;
 const heroImage = document.getElementById('hero-image');
 const heroPrev = document.getElementById('hero-prev');
 const heroNext = document.getElementById('hero-next');
@@ -209,7 +221,7 @@ function renderCart() {
       <article class="cart-item">
         <div class="cart-item-copy">
           <strong>${product.name}</strong>
-          <span>${formatPrice(product.price, 'NGN')} each</span>
+          <span>${formatPrice(product.price, 'NGN')} each Â· Size ${selectedSizes.get(product.id) || 'M'}</span>
         </div>
         <div class="cart-item-controls">
       <button type="button" data-cart-action="decrease" data-product-id="${product.id}" aria-label="Remove one ${product.name}">&#8722;</button>
@@ -231,6 +243,32 @@ function openCart(productId = null) {
   cartDialog.showModal();
 }
 
+function openProductDetails(productId) {
+  const product = products.find((item) => item.id === productId);
+  if (!product) return;
+  activeProduct = product;
+  const sizes = product.categoryKey === 'caps' ? ['One size'] : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  productDetailTitle.textContent = product.name;
+  productDetailCategory.textContent = `${product.category} / ${product.tag}`;
+  productDetailPrice.textContent = formatPrice(product.price, 'NGN');
+  productDetailImage.src = product.image;
+  productDetailImage.alt = `${product.name} preview`;
+  productSizeSelect.innerHTML = sizes.map((size) => `<option value="${size}">${size}</option>`).join('');
+  productSizeSelect.value = selectedSizes.get(product.id) || sizes[0];
+  shareLinks.hidden = true;
+  productDialog.showModal();
+}
+
+function prepareShareLinks() {
+  if (!activeProduct) return;
+  const url = `${window.location.origin}${window.location.pathname}#product-${activeProduct.id}`;
+  const text = `Check out ${activeProduct.name} from DailySwag`;
+  document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+  document.getElementById('share-whatsapp').href = `https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`;
+  document.getElementById('share-x').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+  shareLinks.hidden = false;
+}
+
 async function startPaystackCheckout(email) {
   cartCheckout.disabled = true;
   cartCheckout.textContent = 'Connecting to Paystack...';
@@ -242,7 +280,7 @@ async function startPaystackCheckout(email) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email,
-        items: [...cart.entries()].map(([id, quantity]) => ({ id, quantity }))
+        items: [...cart.entries()].map(([id, quantity]) => ({ id, quantity, size: selectedSizes.get(id) || 'M' }))
       })
     });
     const result = await response.json();
@@ -517,11 +555,11 @@ function renderProducts(category = 'all') {
 
     button.insertAdjacentHTML(
       'afterend',
-      `<button class="checkout-inline" type="button" data-product-id="${product.id}">Buy now</button>`
+      `<button class="checkout-inline" type="button" data-product-id="${product.id}">Select options</button>`
     );
 
     const buyNowButton = document.querySelector(`.checkout-inline[data-product-id="${product.id}"]`);
-    buyNowButton.addEventListener('click', () => openCart(product.id));
+    buyNowButton.addEventListener('click', () => openProductDetails(product.id));
   });
 }
 
@@ -542,6 +580,25 @@ sortSelect.addEventListener('change', () => {
 });
 
 cartButton.addEventListener('click', () => openCart());
+
+productDialogClose.addEventListener('click', () => productDialog.close());
+productDialog.addEventListener('click', (event) => {
+  if (event.target === productDialog) productDialog.close();
+});
+productDetailAdd.addEventListener('click', () => {
+  if (!activeProduct) return;
+  selectedSizes.set(activeProduct.id, productSizeSelect.value);
+  cart.set(activeProduct.id, (cart.get(activeProduct.id) || 0) + 1);
+  renderCart();
+  productDetailAdd.textContent = 'Added to bag';
+  window.setTimeout(() => { productDetailAdd.textContent = 'Add to bag'; }, 1000);
+});
+productShareButton.addEventListener('click', async () => {
+  prepareShareLinks();
+  if (navigator.share && activeProduct) {
+    try { await navigator.share({ title: activeProduct.name, text: `Check out ${activeProduct.name} from DailySwag`, url: window.location.href }); } catch {}
+  }
+});
 
 document.querySelector('.cart-close').addEventListener('click', () => cartDialog.close());
 
