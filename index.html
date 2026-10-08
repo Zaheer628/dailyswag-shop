@@ -86,6 +86,47 @@
       <p class="cart-payment-note">Pay by card or bank transfer. Charges are in NGN.</p>
     </dialog>
 
+    <dialog class="product-dialog" id="product-dialog" aria-labelledby="product-detail-title">
+      <div class="product-dialog-header">
+        <span class="eyebrow">DailySwag / Product details</span>
+        <button class="product-dialog-close" id="product-dialog-close" type="button" aria-label="Close product details">&#215;</button>
+      </div>
+      <div class="product-detail-layout">
+        <div class="product-detail-visual">
+          <span class="product-detail-pulse">DSW / DROP 001</span>
+          <img id="product-detail-image" class="product-detail-image" src="" alt="" />
+        </div>
+        <div class="product-detail-copy">
+          <span class="eyebrow" id="product-detail-category"></span>
+          <h2 id="product-detail-title"></h2>
+          <p class="product-detail-price" id="product-detail-price"></p>
+          <p id="product-detail-description">Made to order for your lane. Select your fit before adding it to your bag.</p>
+          <label class="size-picker" for="product-size-select">Choose your size
+            <select id="product-size-select" required></select>
+          </label>
+          <div class="size-chart">
+            <strong>Size guide</strong>
+            <span>XS  Â·  S  Â·  M  Â·  L  Â·  XL  Â·  XXL</span>
+            <small>For the best fit, compare your measurements with a similar garment you already own.</small>
+          </div>
+          <div class="delivery-note">
+            <strong>Delivery &amp; production</strong>
+            <p>Estimated production time is 2â€“4 weeks and may vary depending on production and order volume.</p>
+            <p>Delivery within Nigeria takes 2â€“5 working days after dispatch. International orders take 7â€“14 working days depending on destination and customs processing.</p>
+          </div>
+          <div class="product-detail-actions">
+            <button class="add-to-cart product-detail-add" id="product-detail-add" type="button">Add to bag</button>
+            <button class="product-share-button" id="product-share-button" type="button">Share</button>
+          </div>
+          <div class="share-links" id="share-links" hidden>
+            <a id="share-facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a id="share-whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a id="share-x" target="_blank" rel="noopener noreferrer">X</a>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
     <dialog class="signup-dialog" id="signup-dialog" aria-labelledby="signup-title">
       <div class="signup-layout">
         <section class="signup-content">
