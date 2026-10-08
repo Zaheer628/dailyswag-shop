@@ -106,6 +106,357 @@
           </label>
           <div class="size-chart">
             <strong>Size guide</strong>
+            <span>XS  -  S  -  M  -  L  -  XL  -  XXL</span>
+            <small>For the best fit, compare your measurements with a similar garment you already own.</small>
+          </div>
+          <div class="delivery-note">
+            <strong>Delivery &amp; production</strong>
+            <p>Estimated production time is 2-4 weeks and may vary depending on production and order volume.</p>
+            <p>Delivery within Nigeria takes 2-5 working days after dispatch. International orders take 7-14 working days depending on destination and customs processing.</p>
+          </div>
+          <div class="product-detail-actions">
+            <button class="add-to-cart product-detail-add" id="product-detail-add" type="button">Add to bag</button>
+            <button class="product-share-button" id="product-share-button" type="button">Share</button>
+          </div>
+          <div class="share-links" id="share-links" hidden>
+            <a id="share-facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a id="share-whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a id="share-x" target="_blank" rel="noopener noreferrer">X</a>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="signup-dialog" id="signup-dialog" aria-labelledby="signup-title">
+      <div class="signup-layout">
+        <section class="signup-content">
+          <div class="signup-heading-row">
+            <span class="eyebrow">DailySwag / The list</span>
+            <button class="signup-close" id="signup-close" type="button" aria-label="Close sign-up">&#215;</button>
+          </div>
+          <h2 id="signup-title">Get in on the next drop.</h2>
+          <p class="signup-intro">Sign up for new releases, custom pieces, and DailySwag updates.</p>
+
+          <form
+            class="signup-form"
+            id="signup-form"
+            name="dailyswag-signup"
+            method="POST"
+          >
+            <p class="signup-honeypot" hidden>
+              <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+            </p>
+            <label for="signup-name">Your name</label>
+            <input id="signup-name" name="name" type="text" autocomplete="name" maxlength="80" placeholder="Full name" required />
+            <label for="signup-email">Email address</label>
+            <input id="signup-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required />
+            <label class="signup-consent">
+              <input name="consent" type="checkbox" value="yes" required />
+              <span>Send me DailySwag drop and product updates. I can unsubscribe anytime.</span>
+            </label>
+            <p class="signup-message" id="signup-message" role="status" aria-live="polite"></p>
+            <button class="signup-submit" id="signup-submit" type="submit">Sign me up</button>
+          </form>
+        </section>
+
+        <aside class="signup-visual" aria-label="DailySwag custom jersey">
+          <span class="signup-visual-tag">DSW / +234</span>
+          <img
+            class="signup-jersey"
+            src="images/products/DS%20%2B234%20JERSEY%20FRONT.jpg"
+            alt="Green and white DailySwag +234 custom jersey"
+          />
+          <span class="signup-visual-caption">Made for your lane.</span>
+        </aside>
+      </div>
+    </dialog>
+
+    <main id="home">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <span class="eyebrow"><span class="live-dot"></span> DailySwag / Drop 001</span>
+            <h1>Made for your lane.<br /><span>Never uniform.</span></h1>
+            <p>
+              Custom tees and jerseys for the names, numbers, and crews you rep. Plain tees and caps for the everyday rotation.
+            </p>
+            <div class="hero-actions">
+          <a class="primary-btn" href="#shop">Shop the drop <span aria-hidden="true">&#8599;</span></a>
+              <a class="secondary-btn" href="#categories">Find your fit</a>
+              <button id="checkout-button" class="checkout-btn" type="button">Review bag</button>
+            </div>
+            <div class="hero-notes">
+              <span><i aria-hidden="true">&#10022;</i> Custom by you</span>
+              <span><i aria-hidden="true">&#9889;</i> Street-ready always</span>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-slider" aria-label="DailySwag photo slideshow">
+          <button class="slider-btn slider-prev" id="hero-prev" type="button" aria-label="Previous image">&#8249;</button>
+              <img
+                id="hero-image"
+                class="hero-image"
+                src="images/products/ng%20image%202.PNG"
+                alt="DailySwag NG streetwear hero image"
+              />
+          <button class="slider-btn slider-next" id="hero-next" type="button" aria-label="Next image">&#8250;</button>
+            </div>
+            <div class="hero-image-label">
+              <span>DS / 001</span>
+              <strong>Wear it your way.</strong>
+            </div>
+            <span class="hero-side-note">LAGOS TO EVERYWHERE</span>
+            <div class="slider-dots" aria-label="Hero image navigation">
+              <button class="slider-dot is-active" type="button" aria-label="Show slide 1" aria-current="true"></button>
+              <button class="slider-dot" type="button" aria-label="Show slide 2" aria-current="false"></button>
+              <button class="slider-dot" type="button" aria-label="Show slide 3" aria-current="false"></button>
+              <button class="slider-dot" type="button" aria-label="Show slide 4" aria-current="false"></button>
+              <button class="slider-dot" type="button" aria-label="Show slide 5" aria-current="false"></button>
+              <button class="slider-dot" type="button" aria-label="Show slide 6" aria-current="false"></button>
+              <button class="slider-dot" type="button" aria-label="Show slide 7" aria-current="false"></button>
+              <button class="slider-dot" type="button" aria-label="Show slide 8" aria-current="false"></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container">
+        <div class="international-banner" aria-label="International pricing banner">
+          <span class="banner-pill">International pricing</span>
+          <p>Worldwide shopping with international card payments. Prices are shown in NGN and your bank converts the charge automatically.</p>
+        </div>
+      </div>
+
+      <section class="categories container" id="categories" aria-labelledby="category-title">
+        <div class="category-heading">
+          <div>
+            <span class="eyebrow">Pick your uniform / 01</span>
+            <h2 id="category-title">Find your lane.</h2>
+          </div>
+          <span class="category-count">Four ways to show up</span>
+        </div>
+        <div class="category-filters" role="group" aria-label="Filter products by category">
+          <button class="category-filter is-active" type="button" data-category-filter="all" aria-pressed="true"><span>+</span>All pieces</button>
+          <button class="category-filter" type="button" data-category-filter="custom-tee" aria-pressed="false"><span>&#10035;</span>Custom tees</button>
+          <button class="category-filter" type="button" data-category-filter="jerseys" aria-pressed="false"><span>&#9672;</span>Jerseys</button>
+          <button class="category-filter" type="button" data-category-filter="caps" aria-pressed="false"><span>&#8963;</span>Caps</button>
+          <button class="category-filter" type="button" data-category-filter="plain-tee" aria-pressed="false"><span>&#9644;</span>Plain tees</button>
+        </div>
+      </section>
+
+      <section class="shop container" id="shop">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Built for the daily rotation / 02</span>
+            <h2>Shop the collection.</h2>
+          </div>
+          <span class="drop-index">DailySwag / Store</span>
+        </div>
+
+        <div class="catalog-toolbar">
+          <p id="catalog-count" role="status" aria-live="polite"></p>
+          <label class="sort-control">
+            <span>Sort by</span>
+            <select id="sort-select" aria-label="Sort products">
+              <option value="featured">Featured</option>
+              <option value="price-ascending">Price: low to high</option>
+              <option value="price-descending">Price: high to low</option>
+              <option value="name">Name</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="products-grid" id="products-grid"></div>
+      </section>
+
+      <section class="drop-story container" id="about">
+        <div class="story-copy">
+          <span class="eyebrow">Your design / Your rules</span>
+          <h2>Start with a blank.<br /><span>Make it yours.</span></h2>
+          <p>Put your name, number, artwork, or crew mark on a tee or jersey. Keep it simple with a plain tee or finish the fit with a cap.</p>
+          <a class="story-link" href="#categories">Build your rotation <span aria-hidden="true">&#8599;</span></a>
+        </div>
+        <div class="story-mark" aria-hidden="true">
+          <span>DSW</span>
+          <strong>001</strong>
+          <small>DAILY / SWAG / WEAR</small>
+        </div>
+      </section>
+
+      <section class="closing-line" aria-label="DailySwag collection">
+        <div class="container closing-inner">
+          <span>YOUR CITY</span><span class="closing-x">&#215;</span><span>YOUR COLOURS</span><span class="closing-x">&#215;</span><span>YOUR CALL</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="container footer-grid">
+        <div>
+          <div class="brand footer-brand">
+            <img class="brand-logo" src="dailyswag%20logo.png" alt="" />
+            <span class="brand-name">DailySwag</span>
+          </div>
+          <p>Custom gear. Everyday pieces. Your own lane.</p>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="#categories">Custom tees</a></li>
+            <li><a href="#categories">Jerseys</a></li>
+            <li><a href="#categories">Caps &amp; plain tees</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>DailySwag</h4>
+          <ul>
+            <li><a href="#about">Our lane</a></li>
+            <li><a href="#shop">Latest drop</a></li>
+            <li><a href="#home">Back to top</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Get in touch</h4>
+          <ul>
+            <li>Custom orders welcome</li>
+            <li>Made for your crew</li>
+            <li class="contact-socials">
+              <a class="contact-social-link" href="https://www.instagram.com/dailyswags/" target="_blank" rel="noopener noreferrer" aria-label="Visit DailySwag on Instagram">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="0.75" fill="currentColor" stroke="none" />
+                </svg>
+                <span>Instagram <small>@dailyswags</small></span>
+              </a>
+              <a class="contact-social-link" href="https://wa.me/2348083877901?text=Hi%20DailySwag%2C%20I%20have%20a%20quick%20question." target="_blank" rel="noopener noreferrer" aria-label="Message DailySwag on WhatsApp">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.2 11.7a8.2 8.2 0 0 1-12.1 7.2L3 20l1.2-4.7a8.2 8.2 0 1 1 16-3.6Z" />
+                  <path d="M8.6 8.2c.3-.5.5-.5.8-.5h.5c.2 0 .4.1.5.4l.7 1.6c.1.2.1.4-.1.6l-.6.8c-.2.2-.2.4 0 .6.5.8 1.2 1.5 2 2 .2.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l1.6.8c.2.1.3.3.3.5 0 .4-.2 1.2-.7 1.5-.4.4-1 .6-1.6.5-1-.2-2.3-.8-3.7-2-1.7-1.5-2.7-3.3-2.9-4.4-.1-.5.3-1.1.6-1.6Z" />
+                </svg>
+                <span>WhatsApp <small>Quick question</small></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DailySwag | Streetwear Drops</title>
+    <meta
+      name="description"
+      content="Custom tees, jerseys, caps, and everyday plain tees made for your lane. Shop the DailySwag drop."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=array@400,600,700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=10" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav-wrap">
+        <div class="brand">
+          <img class="brand-logo" src="dailyswag%20logo.png" alt="" />
+          <span class="brand-name">DailySwag</span>
+        </div>
+        <form class="store-search" role="search">
+          <label class="visually-hidden" for="product-search">Search the store</label>
+          <input id="product-search" type="search" placeholder="Search jerseys, tees, caps..." autocomplete="off" />
+          <button type="submit" aria-label="Search products"><span aria-hidden="true">&#128269;</span></button>
+        </form>
+        <nav class="nav">
+          <a href="#shop">The drop</a>
+          <a href="#categories">Categories</a>
+          <a href="#about">Our lane</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <div class="nav-actions">
+          <div class="currency-switch" aria-label="Select currency">
+            <label for="currency-select" class="currency-label">Currency</label>
+            <select id="currency-select" class="currency-select" aria-label="Choose a currency">
+              <option value="NGN">Worldwide</option>
+            </select>
+          </div>
+          <button
+            class="icon-btn theme-toggle"
+            id="theme-toggle"
+            type="button"
+            aria-label="Switch to dark mode"
+            aria-pressed="false"
+            title="Switch to dark mode"
+          >
+            <span class="theme-icon" aria-hidden="true">&#9790;</span>
+          </button>
+          <button class="cart-btn" id="cart-button" type="button" aria-label="Shopping cart">
+            Bag <span id="cart-count">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+      <div class="cart-dialog-header">
+        <div>
+          <span class="eyebrow">DailySwag / Your selection</span>
+          <h2 id="cart-title">Your bag</h2>
+        </div>
+        <button class="cart-close" type="button" aria-label="Close bag">&#215;</button>
+      </div>
+      <div class="cart-items" id="cart-items"></div>
+      <div class="cart-subtotal">
+        <span>Subtotal</span>
+        <strong id="cart-subtotal">&#8358;0</strong>
+      </div>
+      <label class="checkout-email">
+        Email for payment receipt
+        <input id="checkout-email" type="email" autocomplete="email" placeholder="you@example.com" required />
+      </label>
+      <p class="cart-message" id="cart-message" role="status" aria-live="polite"></p>
+      <button class="cart-checkout" id="cart-checkout" type="button">Continue to payment</button>
+      <p class="cart-payment-note">Pay by card or bank transfer. Charges are in NGN.</p>
+    </dialog>
+
+    <dialog class="product-dialog" id="product-dialog" aria-labelledby="product-detail-title">
+      <div class="product-dialog-header">
+        <span class="eyebrow">DailySwag / Product details</span>
+        <button class="product-dialog-close" id="product-dialog-close" type="button" aria-label="Close product details">&#215;</button>
+      </div>
+      <div class="product-detail-layout">
+        <div class="product-detail-visual">
+          <span class="product-detail-pulse">DSW / DROP 001</span>
+          <img id="product-detail-image" class="product-detail-image" src="" alt="" />
+        </div>
+        <div class="product-detail-copy">
+          <span class="eyebrow" id="product-detail-category"></span>
+          <h2 id="product-detail-title"></h2>
+          <p class="product-detail-price" id="product-detail-price"></p>
+          <p id="product-detail-description">Made to order for your lane. Select your fit before adding it to your bag.</p>
+          <label class="size-picker" for="product-size-select">Choose your size
+            <select id="product-size-select" required></select>
+          </label>
+          <div class="size-chart">
+            <strong>Size guide</strong>
             <span>XS  Â-  S  Â-  M  Â-  L  Â-  XL  Â-  XXL</span>
             <small>For the best fit, compare your measurements with a similar garment you already own.</small>
           </div>
